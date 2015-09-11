@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'daemons'
+
+$APP_PATH = File.expand_path("#{File.dirname(__FILE__)}/..")
+
+Daemons.run("#{$APP_PATH}/lib/telegram_imdb_bot/bot.rb")
