@@ -29,19 +29,17 @@ class Bot
       bot.listen do |message|
         case message.text
         when /^\/imdb\s+(.*)$/
-          Thread.new do
-            bot.api.sendChatAction(chat_id: message.chat.id, action: 'typing')
-            movie = get_movie($1)
-            if movie
-              poster = movie.poster
-              if poster
-                f = open(poster)
-                filename = "#{f.path}.jpg"
-                `mv '#{f.path}' '#{filename}'`
-                bot.api.sendPhoto(chat_id: message.chat.id, photo: File.new(filename)) if File.exist?(filename)
-              end
-              bot.api.sendMessage(chat_id: message.chat.id, text: print_movie(movie), disable_web_page_preview: true)
+          bot.api.sendChatAction(chat_id: message.chat.id, action: 'typing')
+          movie = get_movie($1)
+          if movie
+            poster = movie.poster
+            if poster
+              f = open(poster)
+              filename = "#{f.path}.jpg"
+              `mv '#{f.path}' '#{filename}'`
+              bot.api.sendPhoto(chat_id: message.chat.id, photo: File.new(filename)) if File.exist?(filename)
             end
+            bot.api.sendMessage(chat_id: message.chat.id, text: print_movie(movie), disable_web_page_preview: true)
           end
         end
       end
